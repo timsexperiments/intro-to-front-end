@@ -77,4 +77,4 @@ Add these answers to your project `README.md`:
 
 3.  **Check:**
     Go to your Pull Request on GitHub. You should see the new commit added to the list.
-    **Do not merge this Pull Request**
+    **Do not merge it yet.**

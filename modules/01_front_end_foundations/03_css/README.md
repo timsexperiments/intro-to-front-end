@@ -147,9 +147,55 @@ The `position` property takes an element out of the normal flow.
 4.  `fixed`: Stuck to the viewport (screen). Does not scroll.
 5.  `sticky`: Scrolls until it hits a threshold, then sticks.
 
-## 8. The Designer's Dictionary (Figma to CSS)
+## 8. Modern Layouts (Flexbox & Grid)
 
-If you are coming from a design background, here is how the tools you know map to the code you are writing.
+We used to use "floats" to align things. Now we have engines that match the design tools you are used to.
+
+### Flexbox (1-Dimensional)
+
+Flexbox is the best tool for laying out items in a single row or a single column. It is the industry standard for component layout.
+
+- **Figma Translation:** This is exactly the same as **Auto Layout**.
+
+To use it, you apply `display: flex` to the **Parent Container**. You then control the children using these properties:
+
+| Property              | What it does                                                | Common Values                               |
+| :-------------------- | :---------------------------------------------------------- | :------------------------------------------ |
+| **`flex-direction`**  | Decides if items stack horizontally or vertically.          | `row` (default), `column`                   |
+| **`justify-content`** | Aligns items along the **Main Axis** (Left/Right for rows). | `flex-start`, `center`, `space-between`     |
+| **`align-items`**     | Aligns items along the **Cross Axis** (Up/Down for rows).   | `stretch` (default), `center`, `flex-start` |
+| **`gap`**             | Adds space between items (but not on the outside).          | `10px`, `1rem`                              |
+
+**Example: Centering a Card**
+To center a card perfectly in the middle of the screen, you treat the parent container as the Flex container (you could apply this to the body tag to make the entire page centered):
+
+```css
+.parent {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  min-height: 100vh; /* Ensure parent is full height */
+}
+```
+
+### Grid (2-Dimensional)
+
+Best for complex page layouts (rows AND columns simultaneously).
+
+- **Figma Translation:** This is like a **Layout Grid** but enforced by code.
+
+```css
+.layout {
+  display: grid;
+  /* Create two columns: one is 200px, the other takes the rest */
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+}
+```
+
+## 9. The Designer's Dictionary (Figma to CSS)
+
+Since you are coming from a design background, here is how the tools you know map to the code you are writing.
 
 | CSS Property         | Figma Equivalent          | Notes                                                                 |
 | :------------------- | :------------------------ | :-------------------------------------------------------------------- |

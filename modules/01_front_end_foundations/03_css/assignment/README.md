@@ -7,8 +7,7 @@ In this assignment, you are acting as both the **Designer** and the **Engineer**
 ## Setup
 
 1.  Continue in your `profile-card-project` folder.
-2.  Create a `style.css` file.
-3.  Connect your CSS to your HTML file using the method you think is best.
+2.  Add your styles to the `index.html` file.
 
 ## The Design Spec
 
