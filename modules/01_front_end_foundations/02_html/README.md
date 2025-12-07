@@ -1,124 +1,230 @@
 # 02. HTML (The Structure)
 
-HTML (HyperText Markup Language) is the backbone of every web page. It gives meaning to content and defines the **structure** that browsers render. Understanding _why_ we use particular elements is as important as knowing _how_ to write them.
+HTML (HyperText Markup Language) is the backbone of every web page. While CSS handles the visuals and JavaScript handles the logic, HTML provides the **meaning**.
 
-## Why Care About the Right Elements?
+Writing good HTML is not just about making things appear on screen; it is about describing _what_ those things are to browsers, search engines, and assistive technologies (like screen readers).
 
-- **Accessibility:** Screen readers rely on semantic tags to convey meaning to users with visual impairments.
-- **SEO:** Search engines give higher weight to proper headings and sectioning elements.
-- **Maintainability:** Clear structure makes it easier for developers (and designers) to understand and modify code.
+## 1. The Document Skeleton
 
-## Document Skeleton
-
-- `<html>` – The root element that wraps the entire document.
-- `<head>` – Contains metadata such as the page title, linked scripts, stylesheet references, and SEO tags.
-- `<body>` – Holds all the visible content presented to the user.
-
-## Attributes – Adding Detail to Elements
-
-Attributes are name‑value pairs that configure elements. Some are **global** (available on any element) like `id`, `class`, `style`, `title`, and `data-*`. Others are **specific** to certain tags:
-
-- `href` for `<a>` links.
-- `src` and `alt` for `<img>`.
-- `type`, `placeholder`, `required` for `<input>`.
-- `aria-*` attributes to enhance accessibility (e.g., `aria-label`).
-
-## Semantic Structure – Use Meaningful Tags
-
-Instead of generic `<div>` containers, choose elements that describe the purpose of the content. This improves accessibility and SEO.
-
-- `<header>` – Introductory content, often a logo or site navigation.
-- `<nav>` – Primary navigation links.
-- `<main>` – The main content of the page (only one per page).
-- `<section>` – Thematic grouping of content.
-- `<article>` – Self‑contained composition (e.g., a blog post).
-- `<aside>` – Tangential content like sidebars or pull quotes.
-- `<footer>` – Footer information, copyright, links.
-- `<div>` – Generic block‑level container when no semantic element fits.
-
-> **Accessibility tip:** Prefer the semantic elements above over `<div>` whenever they describe the purpose of the content.
-
-## Textual Content
-
-- `<h1>`‑`<h6>` – Heading hierarchy; `<h1>` should appear once per page as the primary title.
-- `<p>` – Paragraph of text.
-- `<ul>` / `<ol>` + `<li>` – Unordered (bulleted) or ordered (numbered) lists.
-- `<blockquote>` – Quoted text.
-- `<strong>` – Strong importance (often rendered bold).
-- `<em>` – Emphasis (often rendered italic).
-
-**Why group them?** These tags convey _rich text_ semantics, allowing assistive technologies to announce the structure (e.g., headings, list items) correctly.
-
-## Media
-
-- `<img src="..." alt="...">` – Embeds an image; `alt` provides a text alternative for screen readers.
-- `<video>` and `<audio>` – Embed video or audio; include `controls` attribute for user interaction.
-- `<picture>` – Responsive image selection based on viewport or pixel density.
-
-### Interaction & Forms
-
-- `<button>` – Clickable button; can be styled and attached to JavaScript events.
-- `<a href="...">` – Hyperlink; `href` is required to define the destination.
-- `<input>` – Form control (text, checkbox, radio, etc.). Pair with `<label>` for accessibility:
-  ```html
-  <label for="email">Email:</label> <input id="email" type="email" />
-  ```
-- `<form>` – Groups form controls and defines submission behavior.
-
-## Attributes – Adding Detail to Elements
-
-Attributes are name‑value pairs that modify element behavior or provide extra information.
-
-- Global attributes (available on all elements): `id`, `class`, `style`, `title`, `data-*`.
-- Element‑specific attributes:
-  - `href` for `<a>` links.
-  - `src` and `alt` for `<img>`.
-  - `type`, `placeholder`, `required` for `<input>`.
-  - `aria-*` attributes to enhance accessibility (e.g., `aria-label`).
-
-### Example Layout
-
-Below is a simple page skeleton that demonstrates when to use semantic tags versus a generic `<div>`:
+Every HTML page follows a standard structure that sets up the environment for the browser.
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Profile Card</title>
+    <title>Page Title</title>
   </head>
-  <body>
-    <header>
-      <h1>My Portfolio</h1>
-    </header>
-    <nav>
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-      </ul>
-    </nav>
-    <main>
-      <section id="about">
-        <h2>About Me</h2>
-        <p>Short bio...</p>
-      </section>
-      <section id="projects">
-        <h2>Projects</h2>
-        <article>
-          <h3>Profile Card</h3>
-          <!-- content goes here -->
-        </article>
-      </section>
-    </main>
-    <footer>
-      <p>&copy; 2025 My Name</p>
-    </footer>
-  </body>
+  <body></body>
 </html>
 ```
 
-In this example, `<header>`, `<nav>`, `<section>`, and `<article>` replace generic `<div>` elements, giving meaning to each region.
+- `<!DOCTYPE html>`: Tells the browser strictly to use the latest HTML5 standard.
+- `<html>`: The root element. The `lang="en"` attribute is crucial for accessibility, telling screen readers which voice profile to use.
+- `<head>`: The control center. It holds metadata, SEO descriptions, and links to CSS/JS files.
+- `<body>`: The visible canvas.
+
+## 2. Global Attributes
+
+Before diving into specific tags, we need to understand **Attributes**. Attributes provide additional information about elements. They are written inside the opening tag as name-value pairs (`name="value"`).
+
+While some attributes are specific to certain elements (like `src` for images), **Global Attributes** can be used on _any_ HTML element.
+
+- `id`: A unique identifier for the element. No two elements on a page should have the same ID.
+- `class`: Categorizes elements for styling (CSS) or selection (JavaScript). Multiple elements can share the same class.
+- `style`: Applies inline CSS styles (generally avoided in professional engineering in favor of external CSS files).
+- `hidden`: A boolean attribute that prevents the element from being displayed.
+- `data-*`: Custom attributes used to store extra data for JavaScript (e.g., `data-user-id="123"`).
+
+## 3. Semantic Structure
+
+In the early days of the web, developers used generic `<div>` tags for everything. A header was just `<div class="header">`.
+
+**Semantic HTML** means using tags that clearly describe their content. This is critical for **Accessibility**. A blind user navigating via a screen reader can jump directly to the `<main>` content or the `<nav>` menu, but they cannot jump to a specific `<div>`.
+
+### The Hierarchy
+
+- `<header>`: Introductory content, logos, or navigation aids.
+- `<nav>`: The section of the page containing major navigation links.
+- `<main>`: The dominant content of the `<body>`. There should be only one per page.
+- `<article>`: A self-contained composition that makes sense on its own (e.g., a blog post, a product card, a comment).
+- `<section>`: A thematic grouping of content, typically with a heading.
+- `<aside>`: Content tangentially related to the main content (sidebars, callouts).
+- `<footer>`: Copyright, contact info, and sitemap links.
+
+### Comparison: Generic vs. Semantic
+
+**Bad (Generic):**
+The browser sees this as "Box inside a Box inside a Box."
+
+```html
+<div class="blog-post">
+  <div class="title">My Day</div>
+  <div class="content">It was good.</div>
+</div>
+```
+
+**Good (Semantic):**
+The browser understands: "This is an Article. It has a Heading and a Paragraph."
+
+```html
+<article>
+  <h2>My Day</h2>
+  <p>It was good.</p>
+</article>
+```
+
+## 4. Text Content
+
+We categorize these tags together because they denote the hierarchy and flow of reading. Browsers usually have default styles for these (like bolding headings), but their primary purpose is **Structure**, not style.
+
+- `<h1>` - `<h6>`: Headings. `<h1>` is the main page title. You should typically have only one `<h1>` per page. `<h2>` are sections, `<h3>` are subsections.
+- `<p>`: Paragraphs. The basic block of text.
+- `<ul>` & `<ol>`: Unordered (bullet) and Ordered (numbered) lists. These must contain `<li>` (List Item) children.
+- `<blockquote>`: A section that is quoted from another source.
+- `<strong>` & `<em>`: These indicate importance (bold) and emphasis (italic).
+
+**Why not just use a `<b>` tag?**
+The `<b>` tag implies visual boldness. The `<strong>` tag implies _semantic importance_. Screen readers might change their tone of voice for `<strong>`, but not for `<b>`.
+
+## 5. Media
+
+The web is multimedia. These elements embed rich content into the document.
+
+- `<img src="..." alt="...">`: Embeds an image.
+  - **Crucial:** The `alt` (alternative text) attribute is mandatory for valid HTML. It describes the image if it fails to load or if the user cannot see it.
+- `<figure>` & `<figcaption>`: Used to group an image (or chart/code snippet) with a caption that describes it.
+- `<video>` & `<audio>`: Native players for media files.
+  - They often require the `controls` attribute to give the user Play/Pause buttons.
+  - They allow multiple `<source>` children to provide different file formats for different browsers.
+
+```html
+<video controls width="250">
+  <source src="/media/movie.webm" type="video/webm" />
+  <source src="/media/movie.mp4" type="video/mp4" />
+  Sorry, your browser doesn't support embedded videos.
+</video>
+```
+
+## 6. Interaction & Forms
+
+These elements create the interactive surface of the application.
+
+### Anchors (Links)
+
+- `<a>`: The Anchor tag creates hyperlinks. It requires the `href` attribute.
+
+**Relative vs. Absolute Paths:**
+When linking resources (like images or other pages), you have two options:
+
+1.  **Absolute Path:** The full internet address. Used for external sites.
+    - `href="https://google.com"`
+2.  **Relative Path:** The path _relative_ to the current file. Used for internal files.
+    - `href="./about.html"` (Look in the current folder for `about.html`)
+    - `href="../images/logo.png"` (Go up one folder, then into images)
+
+### Inputs
+
+Forms are the primary way users send data to us.
+
+- `<input>`: A self-closing tag. Its behavior changes drastically based on the `type` attribute:
+  - `type="text"`: Standard one-line text.
+  - `type="password"`: Hides characters.
+  - `type="checkbox"`: Toggle selection.
+  - `type="radio"`: Select one from a group.
+- `<textarea>`: A multi-line text input (useful for bios or comments). Unlike `<input>`, it has a closing tag.
+- `<select>`: A dropdown menu. It contains `<option>` children.
+
+### Buttons
+
+Buttons are used to trigger actions on the page.
+
+- <button>: The standard clickable trigger for actions (like submitting forms or opening menus).
+  - `type="submit"`: Submits the form (default inside a `<form>`).
+  - `type="reset"`: Clears the form.
+  - `type="button"`: Does nothing by default; usually connected to JavaScript.
+
+**Button vs. Anchor:**
+
+- Use `<a>` when navigating to a different URL.
+- Use `<button>` when performing an action (like submitting, deleting, or opening a menu).
+
+### The Label Relationship
+
+The most common mistake beginners make is failing to label their inputs.
+
+**Accessibility Requirement:**
+You must link a label to its input using the `for` attribute and the input's `id`.
+
+```html
+<label for="username">Username:</label>
+<input type="text" id="username" name="username" />
+
+<label for="role">Role:</label>
+<select id="role" name="role">
+  <option value="student">Student</option>
+  <option value="teacher">Teacher</option>
+</select>
+```
+
+**Why do this?**
+
+1.  **Hit Area:** Clicking the text "Username" will automatically focus the input box, helping users with motor impairments.
+2.  **Screen Readers:** When the user focuses the input, the reader announces "Username," so they know what to type. Without this, it might just say "Text Edit."
+
+## 7. Tables
+
+Tables are used to display tabular data (rows and columns).
+
+- `<table>`: The container for the table.
+- `<tr>` (Table Row): Defines a row of cells (should be used in `<thead>`, `<tbody>`, and `<tfoot>`).
+- `<th>` (Table Header): A header cell (bold and centered by default).
+- `<td>` (Table Data): A standard data cell.
+- `<thead>`: Groups the header content in a table.
+- `<tbody>`: Groups the body content in a table.
+- `<tfoot>`: Groups the footer content in a table.
+
+```html
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Apple</td>
+      <td>$1.00</td>
+    </tr>
+    <tr>
+      <td>Orange</td>
+      <td>$1.50</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Total</td>
+      <td>$2.50</td>
+    </tr>
+  </tfoot>
+</table>
+```
+
+**A Note on History:**
+In the early 2000s, before modern CSS existed, developers used `<table>` tags to layout entire websites (e.g., a row for the header, a column for the sidebar). **Do not do this.** Tables are strictly for data. Using them for layout is bad for accessibility and makes the code a nightmare to maintain.
+
+## 8. The Generic Containers (Div & Span)
+
+Sometimes, no semantic tag fits. You might just need a box to group elements for styling (e.g., a flexbox container) or to color a specific word red.
+
+- `<div>` (Division): A block-level generic container. It stacks vertically.
+- `<span>`: An inline generic container. It flows within text.
+
+Use these only when a more specific semantic element (like `<section>` or `<button>`) doesn't apply.
 
 ## Assignment: Profile Structure
 
-A quick hands‑on exercise where you build the raw HTML skeleton for a **User Profile Card** using semantic elements. See the full instructions in the [assignment README](./assignment/README.md).
+You will now build the raw HTML skeleton for a **User Profile Card** using the semantic elements we just discussed.
+
+[-> Go to the Assignment](./assignment/README.md)
