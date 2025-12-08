@@ -26,7 +26,7 @@ When the user clicks the primary "Contact/Follow" button:
 
 ### 2. The Counter Logic
 
-Add a "Followers" count to your card (start it at a hardcoded number like 300).
+Add a "Followers" count to your card (start it at a random number between 100 and 1000 — use `Math.random()` — **_hint:_** `Math.floor(Math.random() * 9)` gives you a random whole number between 0 and 9).
 
 - When the user follows, the count should increase by 1.
 - When the user unfollows, the count should decrease by 1.
