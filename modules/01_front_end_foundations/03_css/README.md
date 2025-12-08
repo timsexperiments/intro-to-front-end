@@ -32,7 +32,7 @@ How does the browser know _which_ element to style? It uses selectors to map CSS
 
 ### Basic Connections
 
-- **Type Selector:** Targets the HTML tag itself.
+- **Tag Selector:** Targets the HTML tag itself.
   - CSS: `p { ... }`
   - HTML: `<p>Text</p>`
 - **Class Selector (`.`):** Targets the `class` attribute. _Most common._
@@ -41,6 +41,9 @@ How does the browser know _which_ element to style? It uses selectors to map CSS
 - **ID Selector (`#`):** Targets the `id` attribute. Use sparingly (must be unique).
   - CSS: `#header { ... }`
   - HTML: `<div id="header"></div>`
+- **Universal Selector (`*`):** Targets _every_ element on the page.
+  - CSS: `* { ... }`
+  - Use case: Often used for resetting margins/padding (e.g., `* { box-sizing: border-box; }`).
 
 ### Combining Selectors
 
@@ -58,7 +61,7 @@ You can chain selectors together to be more specific. This is powerful for styli
 - **Attribute Selector:** Targets elements with specific attributes.
   - CSS: `input[type="text"] { ... }`
   - HTML: `<input type="text" />`
-- **Pseudo-classes:** State-based selectors.
+- **Pseudo-selectors:** State-based selectors.
   - `:hover`: Applied when the mouse is over the element.
   - `:focus`: Applied when the element is selected via keyboard or click (essential for accessibility).
   - `:nth-child(n)`: Selects the _nth_ child of a parent.
@@ -156,6 +159,9 @@ We used to use "floats" to align things. Now we have engines that match the desi
 Flexbox is the best tool for laying out items in a single row or a single column. It is the industry standard for component layout.
 
 - **Figma Translation:** This is exactly the same as **Auto Layout**.
+  - **Direction:** `flex-direction` matches the Horizontal (→) / Vertical (↓) arrows.
+  - **Alignment:** `justify-content` and `align-items` match the alignment box.
+  - **Spacing:** `gap` matches the "Spacing between items" field.
 
 To use it, you apply `display: flex` to the **Parent Container**. You then control the children using these properties:
 
@@ -182,7 +188,9 @@ To center a card perfectly in the middle of the screen, you treat the parent con
 
 Best for complex page layouts (rows AND columns simultaneously).
 
-- **Figma Translation:** This is like a **Layout Grid** but enforced by code.
+- **Figma Translation:** This is like a **Layout Grid** (specifically the Columns/Rows overlay).
+  - **Columns:** `grid-template-columns` defines the count and width of columns.
+  - **Gutter:** `gap` matches the Gutter setting.
 
 ```css
 .layout {
@@ -210,6 +218,13 @@ Since you are coming from a design background, here is how the tools you know ma
 | `display: flex`      | **Auto Layout**           | The web's primary layout engine.                                      |
 | `position: absolute` | **Absolute Position**     | Removes item from Auto Layout flow.                                   |
 | `z-index`            | **Layer Order**           | Controls stack order (higher number = on top).                        |
+
+## 10. Resources
+
+CSS has hundreds of properties, and no one memorizes them all. When you need to look up how a property works or see examples, **W3Schools** is an excellent beginner-friendly resource.
+
+- **[W3Schools CSS Reference](https://www.w3schools.com/css/)**: Great for quick examples and "Try it Yourself" playgrounds.
+- **[MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/CSS)**: The industry standard documentation. Use this when you need deep technical details.
 
 ## Assignment: The Skin
 

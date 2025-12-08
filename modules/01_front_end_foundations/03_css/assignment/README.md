@@ -53,6 +53,40 @@ Add these answers to your project `README.md`:
 3. In the `body` styles, did you use `vh` (viewport height) or `%`? Why?
 
 4. Why did we need to change the `display` property of the link (`<a>`) to make it look like a button?
+
+5. Identify what the following CSS selectors target:
+
+   - `h1`
+   - `.card`
+   - `#submit-button`
+   - `div > p`
+   - `ul li a`
+
+6. Write a CSS selector to target all `<img>` elements that are inside a `div` with the class `gallery`.
+
+7. Write a CSS selector to target all `<li>` elements inside a `<ul>` with the class `menu`.
+
+8. Write a CSS selector to target all `h3` elements that are inside a `footer`.
+
+9. Write a CSS selector to target all elements with both the class `alert` and the class `warning`.
+
+10. Write a CSS selector to target _every_ element on the page.
+
+11. Explain what the `:hover` pseudo-class does. Give an example of how you might use it on a button.
+
+12. If you have a CSS rule for `p { color: red; }` and another for `.text { color: blue; }`, and your HTML is `<p class="text">Hello</p>`, what color will the text be? Why?
+
+13. What is the difference between `justify-content` and `align-items` in Flexbox?
+
+14. Describe the difference between `position: relative` and `position: absolute`.
+
+15. Why do engineers often set `box-sizing: border-box` on all elements? What problem does it solve?
+
+16. Write a complete CSS rule for a class named `button`. It should have a `background-color` of `blue`, `color` of `white`, and `padding` of `10px 20px`.
+
+17. Write a complete CSS rule that targets all `h2` elements. Set their `font-size` to `24px` and remove their default margin (set `margin` to `0`).
+
+18. Write a complete CSS rule for a `div` with the ID `container`. Set its `display` to `flex` and ensure its children are centered horizontally using `justify-content`.
 ```
 
 ## Deliverable: Source Control
