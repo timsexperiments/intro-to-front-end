@@ -1,120 +1,242 @@
-# 05. Interactive DOM (Manipulating the Page)
+# 05. The Interactive DOM
 
-In this lesson we bridge JavaScript and the HTML you wrote earlier. You will learn how to **select** elements, **read** and **modify** their properties, and **react** to user actions with event listeners.
+We have built the body (HTML), dressed it up (CSS), and learned the language of logic (JavaScript). Now, it is time to connect the brain to the body.
 
-## 1. The HTMLelement Class & The DOM Tree
+Up until now, your JavaScript ran in the isolated void of the Console. In this lesson, we will use JavaScript to reach out and touch the HTML elements on your page.
 
-Every node you see in the Elements panel is an instance of `HTMLElement` (or a subclass). These objects expose properties and methods that let you inspect the live DOM tree:
+## 1. The Bridge: The `document` Object
 
-- `element.children` – HTMLCollection of child elements.
-- `element.parentElement` – The parent node.
-- `element.firstElementChild` / `element.lastElementChild` – Direct children.
-- `element.childElementCount` – Number of child elements.
+The browser gives us a global object called `document`. This object is your portal to the DOM. It contains methods to find, create, and delete HTML elements.
 
-> **Tip:** The DOM is a _live_ representation. Changing an element updates the page instantly.
+**Crucial Concept:** When you change the DOM with JavaScript (e.g., deleting a photo), you are **NOT** changing your source HTML file. You are only changing the _in-memory_ version currently shown in the browser. If you refresh the page, everything resets to what is in your `.html` file.
 
-## 2. Selecting Elements
+## 2. Selection (Grabbing Elements)
 
-You can grab elements using CSS‑style selectors:
+To manipulate an element, you first have to find it.
 
-```javascript
-// By ID (fast, unique)
-const card = document.getElementById("profile-card");
+### `querySelector()` (Recommended)
 
-// By class (returns the first match)
-const btn = document.querySelector(".follow-btn");
-
-// All matches – returns a NodeList
-const images = document.querySelectorAll(".profile-pic");
-```
-
-**Alternative inline attributes** (less recommended for maintainability):
-
-```html
-<button onclick="toggleFollow()">Follow</button>
-```
-
-These call a global function when clicked.
-
-## 3. Reading & Manipulating Content
-
-### Text & HTML
-
-- `element.innerText` – Visible text (ignores hidden markup).
-- `element.textContent` – All text, including hidden.
-- `element.innerHTML` – Raw HTML string (use with caution – can introduce XSS).
+This is the modern standard. It uses the **CSS Selectors** you already know. Finds the **first** element that matches a CSS selector.
 
 ```javascript
-title.innerText = "Senior Designer"; // safe
-profile.innerHTML = "<p>New <strong>bio</strong></p>"; // be careful!
+// Finds the first <h1> tag
+const title = document.querySelector("h1");
+
+// Finds the element with class "card"
+const card = document.querySelector(".card");
+
+// Finds the element with ID "submit-btn"
+const btn = document.querySelector("#submit-btn");
 ```
 
-### Attributes
+### `querySelectorAll()`
 
-- `element.getAttribute('src')`
-- `element.setAttribute('alt', 'Profile picture')`
-- `element.removeAttribute('disabled')`
-
-### Classes & Styles
-
-- `element.classList.add('active')`
-- `element.classList.toggle('active')`
-- `element.classList.remove('active')`
-- `element.style.property = 'value'` (inline style, usually replace with a CSS class).
-
-## 4. Event Listeners
-
-The most common way to react to user actions is `addEventListener`:
+Finds **all** elements that match. It returns a `NodeList` (which acts like an Array).
 
 ```javascript
-btn.addEventListener("click", function (e) {
-  console.log("Button clicked");
-  // toggle follow state
-  if (btn.innerText === "Follow") {
-    btn.innerText = "Following";
-    btn.classList.add("following");
-  } else {
-    btn.innerText = "Follow";
-    btn.classList.remove("following");
+const allButtons = document.querySelectorAll("button");
+
+// We can loop through them!
+for (const btn of allButtons) {
+  console.log(btn);
+}
+```
+
+> **Note:** `querySelectorAll` returns a "static" list. If you add more buttons to the page later, this list won't automatically update.
+
+### `getElementById()`
+
+The classic, fast way to grab a specific element by ID.
+
+```javascript
+const title = document.getElementById("main-title");
+```
+
+## 3. The `HTMLElement` Class
+
+When you grab an element, the browser returns an instance of the **`HTMLElement`** class. These objects have properties (data) and methods (actions).
+
+### Common Properties
+
+- **`element.innerText`**: The visible text inside the element.
+- **`element.innerHTML`**: The raw HTML inside. **Warning:** Be careful when using this! If you insert user-generated content here without sanitizing it, you risk XSS (Cross-Site Scripting) attacks (e.g., a malicious user inserting a script tag).
+- **`element.children`**: A list of elements inside this one.
+- **`element.style`**: An object representing the inline CSS styles.
+- **`element.classList`**: A manager for the element's CSS classes.
+
+## 4. Reading & Changing Content
+
+Once you have an element, you often want to change what's inside.
+
+### `innerText` vs `textContent` vs `innerHTML`
+
+- **`element.textContent`**: The safest and fastest way to set text. It sets the raw text content.
+- **`element.innerText`**: Similar to `textContent`, but it respects CSS styling (e.g., it won't show text that is `display: none`).
+- **`element.innerHTML`**: Parses the string as HTML.
+  - **Warning:** Be careful! If you insert user-generated content here without sanitizing it, you risk XSS (Cross-Site Scripting) attacks.
+
+```javascript
+const title = document.querySelector("h1");
+
+title.textContent = "Hello World"; // Good default
+title.innerHTML = "Hello <span>World</span>"; // Renders the span as HTML
+```
+
+## 5. Inputs & Values
+
+When working with form elements (`<input>`, `<textarea>`, `<select>`), we don't use `innerText`. We use **`value`**.
+
+The `value` property represents what the user has currently typed or selected.
+
+```javascript
+const emailInput = document.querySelector("#email");
+
+// Reading the value
+console.log(emailInput.value); // What the user typed
+
+// Writing the value (Programmatically filling the form)
+emailInput.value = "user@example.com";
+```
+
+### Styles (`classList` vs `.style`)
+
+You _can_ set styles directly using `.style`, but it applies **inline styles**, which are hard to override and messy.
+
+**Bad:**
+
+```javascript
+// Adds inline style="color: red;"
+btn.style.color = "red";
+```
+
+**Good (`classList`):**
+Define a class in your CSS (`.active { color: red; }`) and toggle it in JS.
+
+```javascript
+btn.classList.add("active");
+btn.classList.remove("active");
+btn.classList.toggle("active"); // Adds if missing, removes if present
+btn.classList.contains("active"); // Returns true/false
+```
+
+## 6. Creating & Removing Elements
+
+You aren't limited to the elements you wrote in your HTML file. You can build new ones on the fly.
+
+### 1. Create
+
+```javascript
+const newBtn = document.createElement("button");
+newBtn.textContent = "Click Me";
+newBtn.classList.add("btn-primary");
+```
+
+### 2. Insert
+
+You need to tell the browser _where_ to put this new element.
+
+```javascript
+const container = document.querySelector(".container");
+
+container.append(newBtn); // Adds to the end of the container
+container.prepend(newBtn); // Adds to the start
+```
+
+### 3. Clear
+
+Sometimes you want to wipe an element clean before adding new things (like removing text to make room for an input).
+
+```javascript
+const container = document.querySelector(".name-container");
+container.innerHTML = ""; // Removes everything inside
+
+// Alternative (Looping to remove)
+while (container.firstChild) {
+  container.removeChild(container.firstChild);
+}
+```
+
+### 4. Remove
+
+```javascript
+newBtn.remove(); // Deletes it from the page
+```
+
+## 7. Events (Listening)
+
+Websites are event-driven. We use `addEventListener` to tell the browser: _"Hey, wait for the user to do X, and then run function Y."_
+
+```javascript
+const btn = document.querySelector("#my-btn");
+
+btn.addEventListener("click", () => {
+  console.log("Button was clicked!");
+});
+```
+
+### Common Events
+
+- **Mouse:** `click`, `mouseenter` (hover start), `mouseleave` (hover end).
+- **Keyboard:** `keydown`, `keyup`.
+- **Forms:** `submit`, `input` (typing), `change`.
+
+### Keyboard Example (Enter Key)
+
+```javascript
+const input = document.querySelector("#chat-input");
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    console.log("Message sent:", input.value);
   }
 });
 ```
 
-### Common Event Types
+### Script Timing (`DOMContentLoaded`)
 
-- `click` – Mouse click or tap.
-- `input` – Value change in `<input>`/`<textarea>`.
-- `change` – When a form control loses focus after a change.
-- `submit` – Form submission.
-- `keydown` / `keyup` – Keyboard presses.
-- `mouseenter` / `mouseleave` – Hover enter/exit.
-- `focus` / `blur` – Element gains/loses focus.
+If your script runs before the HTML exists, it won't find your elements.
+**Best Practice:** Put your `<script>` at the bottom of `<body>`.
+**Alternative:** Listen for the DOM to be ready.
 
-### Event Object
+```javascript
+document.addEventListener("DOMContentLoaded", () => {
+  // Run your code here
+});
+```
 
-The callback receives an `Event` object (`e`). Useful properties:
+## 8. The Event Object
 
-- `e.target` – The element that triggered the event.
-- `e.currentTarget` – The element the listener is attached to.
-- `e.preventDefault()` – Stop default browser behavior (e.g., form submit).
-- `e.stopPropagation()` – Prevent bubbling to parent elements.
+When an event occurs, the browser passes an **Event Object** (`e`) to your function.
 
-## 5. Other Useful DOM Manipulations
+- **`e.target`**: The specific element that was clicked.
+- **`e.preventDefault()`**: Stops the default browser behavior (like a form refreshing the page).
 
-- **Creating elements:** `document.createElement('div')`.
-- **Appending:** `parent.appendChild(child)` or `parent.append(child)`.
-- **Removing:** `element.remove()`.
-- **Cloning:** `element.cloneNode(true)` (deep clone).
-- **Traversing:** `element.closest('section')` finds the nearest ancestor matching a selector.
+```javascript
+form.addEventListener("submit", (e) => {
+  e.preventDefault(); // Stop refresh
+  console.log("Form submitted!");
+});
+```
 
-## Assignment: Interactive Profile Card
+## 9. The Event Flow (Bubbling)
 
-A hands‑on project that builds on the previous lessons:
+Events "bubble" up from the clicked element to its parents.
 
-1. Add a **Follow** button to your profile card.
-2. When the button is clicked, toggle the text between **Follow** and **Following** and change its background color using a CSS class.
-3. Use `addEventListener` (not inline `onclick`).
-4. Bonus: Add a second button that, when clicked, removes the profile picture from the DOM.
-5. Document your code with comments explaining each step.
+1.  You click a button inside a card.
+2.  The button's click listener fires.
+3.  The card's click listener fires.
 
-Full instructions are in the [assignment README](./assignment/README.md).
+You can stop this with `e.stopPropagation()`.
+
+## 10. Best Practices Summary
+
+1.  **Separation of Concerns:** Keep styles in CSS, structure in HTML, and logic in JS.
+2.  **Avoid Inline Handlers:** Don't use `onclick="..."` in HTML. Use `addEventListener`.
+3.  **Use Classes for State:** Don't manually change 10 CSS properties in JS. Toggle a single class.
+4.  **Cache Selectors:** If you use an element often, save it to a variable (`const btn = ...`) instead of querying it every time.
+
+## Assignment: The Interaction
+
+It is time to make your Profile Card actually work.
+
+[-> Go to the Assignment](./assignment/README.md)
