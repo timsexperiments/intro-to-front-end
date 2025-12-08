@@ -9,6 +9,14 @@ In this assignment, you are acting as both the **Designer** and the **Engineer**
 1.  Continue in your `profile-card-project` folder.
 2.  Add your styles to the `index.html` file.
 
+## Bonus: Recommended Resources
+
+If you want to dive deeper or need a reference while working, we highly recommend checking out **W3Schools**. It's a fantastic resource for beginners.
+
+- [W3Schools CSS Tutorial](https://www.w3schools.com/css/) - Great for basic properties.
+- [W3Schools Flexbox](https://www.w3schools.com/css/css3_flexbox.asp) - Visual guide to Flexbox.
+- [W3Schools Grid](https://www.w3schools.com/css/css_grid.asp) - Visual guide to CSS Grid.
+
 ## The Design Spec
 
 You are free to write the CSS however you like, but the final result should attempt to meet the following visual goals:

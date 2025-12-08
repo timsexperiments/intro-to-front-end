@@ -15,16 +15,21 @@ You can write CSS in three places. While each has its use cases, **External Styl
 
 ## 2. Anatomy of a Rule
 
-CSS works by **Selecting** an element and defining **Properties** for it.
+A CSS rule consists of a **Selector** and a **Declaration Block**.
 
 ```css
 /* Selector */
 h1 {
-  /* Property: Value; */
-  color: blue;
-  font-size: 24px;
+  /* Declaration Block */
+  color: blue; /* Declaration (Property: Value) */
+  font-size: 24px; /* Declaration (Property: Value) */
 }
 ```
+
+- **Selector (`h1`)**: Tells the browser _which_ HTML element(s) to target.
+- **Declaration Block (`{ ... }`)**: Contains the style rules.
+- **Property (`color`)**: The specific aspect you want to change (e.g., color, size, margin).
+- **Value (`blue`)**: The setting you want to apply to that property.
 
 ## 3. Selectors
 
@@ -56,6 +61,21 @@ You can chain selectors together to be more specific. This is powerful for styli
 - **ID + Class:**
   - `#nav.active` -> Targets `<nav id="nav" class="active">`.
 
+### Grouping Selectors
+
+You can target multiple elements at once by separating selectors with a comma. This helps avoid repeating code.
+
+- **Syntax:** `selector, selector { ... }`
+- **Example:**
+  ```css
+  h1,
+  h2,
+  .title {
+    color: navy;
+  }
+  ```
+  This applies the color navy to all `h1` tags, all `h2` tags, and any element with the class `.title`.
+
 ### Advanced Specificity
 
 - **Attribute Selector:** Targets elements with specific attributes.
@@ -68,7 +88,46 @@ You can chain selectors together to be more specific. This is powerful for styli
     - Example: `li:nth-child(2)` selects the second item in a list.
     - Example: `tr:nth-child(even)` is great for "zebra striping" tables.
 
-## 4. The Cascade (Who Wins?)
+## 4. Mastering Classes
+
+Classes are the most flexible tool in CSS. You can assign **multiple classes** to a single HTML element to combine styles. This allows you to create a "base" style and then "modify" it.
+
+### Applying Multiple Classes in HTML
+
+Separate class names with a space inside the `class` attribute.
+
+```html
+<!-- This button has two classes: 'btn' and 'primary' -->
+<button class="btn primary">Click Me</button>
+```
+
+### Styling Multiple Classes
+
+You can write rules for each class individually, or target the specific combination.
+
+```css
+/* 1. Base Style (Applies to all buttons) */
+.btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+/* 2. Modifier Style (Applies only to .primary) */
+.primary {
+  background-color: blue;
+  color: white;
+}
+
+/* 3. Combination Selector (Targeting BOTH) */
+/* Only applies if an element has BOTH classes */
+.btn.primary {
+  font-weight: bold;
+}
+```
+
+In this example, the button gets the padding/radius from `.btn`, the color from `.primary`, AND the bold font because it has both.
+
+## 5. The Cascade (Who Wins?)
 
 If two rules try to style the same element, the browser has to decide which one to apply.
 
@@ -92,7 +151,7 @@ h1 {
 }
 ```
 
-## 5. CSS Units (Measuring Things)
+## 6. CSS Units (Measuring Things)
 
 In design tools, everything is pixels. In CSS, we have smarter units that adapt to screen sizes and user preferences.
 
@@ -105,7 +164,7 @@ In design tools, everything is pixels. In CSS, we have smarter units that adapt 
 | `vh`  | Viewport Height | 1% of the screen height.                                                                                                  | Full-screen hero sections (`100vh`).                        |
 | `vw`  | Viewport Width  | 1% of the screen width.                                                                                                   | Full-width text scaling.                                    |
 
-## 6. The Box Model
+## 7. The Box Model
 
 This is the most critical concept in CSS. Every element on a web page is a rectangular box. That box has layers:
 
@@ -131,7 +190,7 @@ graph TD
 
 > **Pro Tip:** By default, `width` only sets the size of the _Content_. If you add padding, the total size of the element grows. Engineers usually fix this by setting `box-sizing: border-box` on all elements, so `width` includes the padding and border.
 
-## 7. Layout & Display
+## 8. Layout & Display
 
 The `display` property controls how an element behaves in the flow of the page.
 
@@ -150,7 +209,7 @@ The `position` property takes an element out of the normal flow.
 4.  `fixed`: Stuck to the viewport (screen). Does not scroll.
 5.  `sticky`: Scrolls until it hits a threshold, then sticks.
 
-## 8. Modern Layouts (Flexbox & Grid)
+## 9. Modern Layouts (Flexbox & Grid)
 
 We used to use "floats" to align things. Now we have engines that match the design tools you are used to.
 
@@ -201,7 +260,9 @@ Best for complex page layouts (rows AND columns simultaneously).
 }
 ```
 
-## 9. The Designer's Dictionary (Figma to CSS)
+> **Note on `fr` units:** The `fr` unit stands for "fraction". It represents a fraction of the available space in the grid container. In the example above, `1fr` means "take up all the remaining space after the 200px column is drawn". If you had `1fr 1fr 1fr`, you would have three equal columns.
+
+## 10. The Designer's Dictionary (Figma to CSS)
 
 Since you are coming from a design background, here is how the tools you know map to the code you are writing.
 
@@ -219,7 +280,7 @@ Since you are coming from a design background, here is how the tools you know ma
 | `position: absolute` | **Absolute Position**     | Removes item from Auto Layout flow.                                   |
 | `z-index`            | **Layer Order**           | Controls stack order (higher number = on top).                        |
 
-## 10. Resources
+## 11. Resources
 
 CSS has hundreds of properties, and no one memorizes them all. When you need to look up how a property works or see examples, **W3Schools** is an excellent beginner-friendly resource.
 
