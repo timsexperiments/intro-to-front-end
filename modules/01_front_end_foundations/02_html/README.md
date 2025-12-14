@@ -64,6 +64,16 @@ The browser sees this as "Box inside a Box inside a Box."
 </div>
 ```
 
+<div style="display: grid; gap: 20px; margin: 20px 0;">
+  <div style="border: 2px solid #d32f2f; padding: 15px; background: #ffebee; border-radius: 8px;">
+    <strong style="color: #d32f2f;">❌ Bad (Generic)</strong>
+    <div class="blog-post" style="background: white; padding: 12px; margin-top: 10px; border-radius: 4px;">
+      <div class="title" style="font-size: 1.2em; margin-bottom: 8px;">My Day</div>
+      <div class="content">It was good.</div>
+    </div>
+    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Screen readers can't differentiate these divs from layout containers.</p>
+  </div>
+
 **Good (Semantic):**
 The browser understands: "This is an Article. It has a Heading and a Paragraph."
 
@@ -73,6 +83,60 @@ The browser understands: "This is an Article. It has a Heading and a Paragraph."
   <p>It was good.</p>
 </article>
 ```
+
+  <div style="border: 2px solid #4CAF50; padding: 15px; background: #e8f5e9; border-radius: 8px;">
+    <strong style="color: #4CAF50;">✅ Good (Semantic)</strong>
+    <article style="background: white; padding: 12px; margin-top: 10px; border-radius: 4px;">
+      <h2 style="margin: 0 0 8px 0;">My Day</h2>
+      <p style="margin: 0;">It was good.</p>
+    </article>
+    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Browser & screen readers understand this is a self-contained article with a heading.</p>
+  </div>
+</div>
+
+### Try It Yourself: Explore with DevTools
+
+Want to see how screen readers actually interpret these elements? Chrome DevTools has built-in accessibility tools that show you exactly what assistive technologies "see."
+
+**Step-by-Step Guide:**
+
+1. **Open DevTools**
+
+   - Right-click anywhere on this page and select "Inspect"
+   - Or press `F12` (Windows/Linux) or `Cmd+Option+I` (Mac)
+
+2. **Open the Accessibility Panel**
+
+   - In DevTools, click the **Elements** tab
+   - Look at the bottom panel and find the **Accessibility** tab
+   - If you don't see it, click the `>>` arrows and select "Accessibility" from the dropdown
+
+3. **Inspect the Generic Div Example**
+
+   - Use the element picker (top-left of DevTools) or scroll in the Elements panel
+   - Find the `<div class="blog-post">` element above
+   - Look at the Accessibility panel - you'll see it's labeled as a generic "div" with no semantic meaning
+   - Screen readers would announce this as just a container, not as a blog post
+
+4. **Inspect the Semantic Article Example**
+
+   - Now select the `<article>` element from the green box
+   - In the Accessibility panel, notice it has a proper **role: "article"**
+   - The `<h2>` inside is recognized as a **heading level 2**
+   - Screen readers can navigate directly to this article and understand its structure!
+
+5. **View the Accessibility Tree**
+   - In the Accessibility panel, you can see the "Accessibility Tree"
+   - This is exactly what a screen reader uses to navigate the page
+   - Compare how the generic divs appear vs. the semantic elements
+   - Semantic elements have clear roles, labels, and hierarchy
+
+**What to Notice:**
+
+- Generic `<div>` elements have role: "generic" - they mean nothing to assistive tech
+- Semantic elements like `<article>`, `<nav>`, `<main>` have meaningful roles
+- Headings (`<h1>` - `<h6>`) create a navigable outline for screen reader users
+- Proper structure lets users jump between sections instantly instead of listening to everything
 
 ## 4. Text Content
 
@@ -86,6 +150,20 @@ We categorize these tags together because they denote the hierarchy and flow of 
 
 **Why not just use a `<b>` tag?**
 The `<b>` tag implies visual boldness. The `<strong>` tag implies _semantic importance_. Screen readers might change their tone of voice for `<strong>`, but not for `<b>`.
+
+**Heading hierarchy from `<h1>` to `<h6>`:**
+
+<div style="padding: 20px; background: #f5f5f5; border-radius: 8px; margin: 20px 0;">
+  <h1 style="margin: 10px 0;">h1: Main Page Title</h1>
+  <h2 style="margin: 10px 0;">h2: Major Section</h2>
+  <h3 style="margin: 10px 0;">h3: Subsection</h3>
+  <h4 style="margin: 10px 0;">h4: Sub-subsection</h4>
+  <h5 style="margin: 10px 0;">h5: Minor Heading</h5>
+  <h6 style="margin: 10px 0;">h6: Smallest Heading</h6>
+  <p style="margin: 10px 0;">p: Regular paragraph text for comparison</p>
+</div>
+
+Note how the sizes decrease hierarchically, helping users visually understand content structure.
 
 ## 5. Media
 
@@ -123,17 +201,105 @@ When linking resources (like images or other pages), you have two options:
     - `href="./about.html"` (Look in the current folder for `about.html`)
     - `href="../images/logo.png"` (Go up one folder, then into images)
 
+**Example:**
+
+```html
+<a href="https://timsexperiments.foo">TimsExperiments</a>
+```
+
+<div style="padding: 15px; background: #f5f5f5; border-radius: 4px; border-left: 4px solid #2196F3;">
+  <a href="https://timsexperiments.foo" style="color: #2196F3; text-decoration: underline;">TimsExperiments</a>
+</div>
+
 ### Inputs
 
 Forms are the primary way users send data to us.
 
-- `<input>`: A self-closing tag. Its behavior changes drastically based on the `type` attribute:
-  - `type="text"`: Standard one-line text.
-  - `type="password"`: Hides characters.
-  - `type="checkbox"`: Toggle selection.
-  - `type="radio"`: Select one from a group.
-- `<textarea>`: A multi-line text input (useful for bios or comments). Unlike `<input>`, it has a closing tag.
-- `<select>`: A dropdown menu. It contains `<option>` children.
+**Text Input:**
+
+```html
+<label for="username">Username:</label>
+<input type="text" id="username" placeholder="Enter your username" />
+```
+
+<div style="padding: 15px; background: #f5f5f5; border-radius: 4px; margin-bottom: 20px;">
+  <label for="demo-username" style="display: block; margin-bottom: 8px; font-weight: 500;">Username:</label>
+  <input type="text" id="demo-username" placeholder="Enter your username" style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+</div>
+
+**Password Input:**
+
+```html
+<label for="password">Password:</label>
+<input type="password" id="password" placeholder="Enter password" />
+```
+
+<div style="padding: 15px; background: #f5f5f5; border-radius: 4px; margin-bottom: 20px;">
+  <label for="demo-password" style="display: block; margin-bottom: 8px; font-weight: 500;">Password:</label>
+  <input type="password" id="demo-password" placeholder="Enter password" style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+</div>
+
+**Textarea (Multi-line):**
+
+```html
+<label for="bio">Bio:</label>
+<textarea id="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+```
+
+<div style="padding: 15px; background: #f5f5f5; border-radius: 4px; margin-bottom: 20px;">
+  <label for="demo-bio" style="display: block; margin-bottom: 8px; font-weight: 500;">Bio:</label>
+  <textarea id="demo-bio" rows="3" placeholder="Tell us about yourself..." style="width: 100%; max-width: 400px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"></textarea>
+</div>
+
+**Select (Dropdown):**
+
+```html
+<label for="role">Role:</label>
+<select id="role">
+  <option value="">Choose a role</option>
+  <option value="student">Student</option>
+  <option value="teacher">Teacher</option>
+  <option value="admin">Admin</option>
+</select>
+```
+
+<div style="padding: 15px; background: #f5f5f5; border-radius: 4px; margin-bottom: 20px;">
+  <label for="demo-role" style="display: block; margin-bottom: 8px; font-weight: 500;">Role:</label>
+  <select id="demo-role" style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+    <option value="">Choose a role</option>
+    <option value="student">Student</option>
+    <option value="teacher">Teacher</option>
+    <option value="admin">Admin</option>
+  </select>
+</div>
+
+**Checkboxes:**
+
+```html
+<label> <input type="checkbox" /> I agree to the terms </label>
+```
+
+<div style="padding: 15px; background: #f5f5f5; border-radius: 4px; margin-bottom: 20px;">
+  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+    <input type="checkbox" /> I agree to the terms
+  </label>
+</div>
+
+**Radio Buttons:**
+
+```html
+<label><input type="radio" name="plan" value="free" /> Free Plan</label>
+<label><input type="radio" name="plan" value="pro" /> Pro Plan</label>
+```
+
+<div style="padding: 15px; background: #f5f5f5; border-radius: 4px;">
+  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 8px;">
+    <input type="radio" name="demo-plan" value="free" /> Free Plan
+  </label>
+  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+    <input type="radio" name="demo-plan" value="pro" /> Pro Plan
+  </label>
+</div>
 
 ### Buttons
 
@@ -211,6 +377,33 @@ Tables are used to display tabular data (rows and columns).
 </table>
 ```
 
+<div style="padding: 20px; background: #f9f9f9; border-radius: 8px; margin: 20px 0;">
+  <table style="width: 100%; border-collapse: collapse; background: white;">
+    <thead>
+      <tr style="background: #e0e0e0;">
+        <th style="padding: 12px; text-align: left; border: 1px solid #ccc;">Item</th>
+        <th style="padding: 12px; text-align: left; border: 1px solid #ccc;">Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px; border: 1px solid #ccc;">Apple</td>
+        <td style="padding: 12px; border: 1px solid #ccc;">$1.00</td>
+      </tr>
+      <tr style="background: #f5f5f5;">
+        <td style="padding: 12px; border: 1px solid #ccc;">Orange</td>
+        <td style="padding: 12px; border: 1px solid #ccc;">$1.50</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr style="background: #e8f5e9; font-weight: bold;">
+        <td style="padding: 12px; border: 1px solid #ccc;">Total</td>
+        <td style="padding: 12px; border: 1px solid #ccc;">$2.50</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
 **A Note on History:**
 In the early 2000s, before modern CSS existed, developers used `<table>` tags to layout entire websites (e.g., a row for the header, a column for the sidebar). **Do not do this.** Tables are strictly for data. Using them for layout is bad for accessibility and makes the code a nightmare to maintain.
 
@@ -222,6 +415,22 @@ Sometimes, no semantic tag fits. You might just need a box to group elements for
 - `<span>`: An inline generic container. It flows within text.
 
 Use these only when a more specific semantic element (like `<section>` or `<button>`) doesn't apply.
+
+### Example: Block vs. Inline
+
+<div style="padding: 20px; background: #fff3e0; border-radius: 8px; margin: 20px 0;">
+  <h4 style="margin-top: 0;">Div (Block-level) - Stacks Vertically</h4>
+  <div style="background: #ff9800; color: white; padding: 10px; margin: 5px 0;">First Div</div>
+  <div style="background: #ff9800; color: white; padding: 10px; margin: 5px 0;">Second Div</div>
+  <div style="background: #ff9800; color: white; padding: 10px; margin: 5px 0;">Third Div</div>
+  
+  <h4 style="margin-top: 20px;">Span (Inline) - Flows with Text</h4>
+  <p>
+    This is a paragraph with 
+    <span style="background: #4CAF50; color: white; padding: 4px 8px;">inline span</span> and 
+    <span style="background: #2196F3; color: white; padding: 4px 8px;">another span</span> that flow within the text.
+  </p>
+</div>
 
 ## Assignment: Profile Structure
 

@@ -28,11 +28,89 @@ Every browser has a built-in JavaScript environment called the **Console**. This
     console.log("Hello, World!");
     ```
 
-**`console.log()`** is your most important tool. It prints data to this panel so you can see what your code is doing.
+**`console.log()`** is an important tool. It prints data to this panel so you can see what your code is doing.
 
 ### The Single-Threaded Model
 
 JavaScript is **Single-Threaded**. This means it has one "Event Loop" and can only do **one thing at a time**. It reads one line, executes it, and moves to the next. It cannot process two functions simultaneously. This simplifies your mental model: you rarely have to worry about two parts of your code fighting over the same variable at the exact same time.
+
+**Visualizing Single-Threaded Execution:**
+
+```javascript
+console.log("Start"); // Step 1
+const x = 5 + 3; // Step 2
+console.log(x); // Step 3
+console.log("End"); // Step 4
+```
+
+<div style="padding: 20px; background: #f5f5f5; border-radius: 8px; margin: 20px 0;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div>
+      <h4 style="margin-top: 0; color: #1976D2;">📚 Call Stack (One at a Time)</h4>
+      <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">JavaScript executes code in sequence:</p>
+      <div style="background: white; border-radius: 4px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div style="background: #e3f2fd; border-left: 4px solid #2196F3; padding: 10px; margin-bottom: 8px; border-radius: 4px;">
+          <strong>Step 4:</strong> console.log("End") ⏸️
+        </div>
+        <div style="background: #e8f5e9; border-left: 4px solid #4CAF50; padding: 10px; margin-bottom: 8px; border-radius: 4px;">
+          <strong>Step 3:</strong> console.log(8) ✅
+        </div>
+        <div style="background: #fff3e0; border-left: 4px solid #FF9800; padding: 10px; margin-bottom: 8px; border-radius: 4px;">
+          <strong>Step 2:</strong> const x = 8 ✅
+        </div>
+        <div style="background: #fce4ec; border-left: 4px solid #E91E63; padding: 10px; border-radius: 4px;">
+          <strong>Step 1:</strong> console.log("Start") ✅
+        </div>
+      </div>
+      <p style="font-size: 0.85em; color: #666; margin-top: 10px; font-style: italic;">
+        ⏸️ = Currently executing<br/>
+        ✅ = Already completed
+      </p>
+    </div>
+    <div>
+      <h4 style="margin-top: 0; color: #D32F2F;">❌ What JavaScript Can't Do</h4>
+      <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">These won't run at the same time:</p>
+      <div style="background: white; border-radius: 4px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div style="background: #ffebee; border: 2px dashed #D32F2F; padding: 12px; border-radius: 4px; margin-bottom: 10px; text-align: center;">
+          <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <div style="background: #EF5350; color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.85em;">
+              Task A
+            </div>
+            <strong>+</strong>
+            <div style="background: #EF5350; color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.85em;">
+              Task B
+            </div>
+          </div>
+          <p style="margin: 10px 0 0 0; font-size: 0.85em;">Running simultaneously ❌</p>
+        </div>
+        <div style="background: #e8f5e9; border: 2px solid #4CAF50; padding: 12px; border-radius: 4px; text-align: center;">
+          <div style="margin-bottom: 8px;">
+            <div style="background: #66BB6A; color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.85em; display: inline-block;">
+              Task A
+            </div>
+          </div>
+          <div style="font-size: 0.9em; margin: 5px 0;">↓ then</div>
+          <div>
+            <div style="background: #66BB6A; color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.85em; display: inline-block;">
+              Task B
+            </div>
+          </div>
+          <p style="margin: 10px 0 0 0; font-size: 0.85em;">One after another ✅</p>
+        </div>
+      </div>
+      <p style="font-size: 0.85em; color: #666; margin-top: 10px;">
+        JavaScript finishes one task completely before starting the next.
+      </p>
+    </div>
+    
+  </div>
+</div>
+
+**Why This Matters:**
+
+- Simpler debugging: Your code runs in a predictable order
+- No race conditions: Two functions can't modify the same variable at the exact same instant
+- Easy mental model: Just follow the code from top to bottom
 
 ## 2. Comments
 
@@ -52,7 +130,87 @@ Code is read by humans more often than machines. Comments allow you to leave not
 
 Variables are labeled boxes where we store data. To understand variables, we must understand **Scope**—which is simply "where a variable is visible."
 
-A **Block Scope** is created anytime you see curly braces `{ ... }` (like in an `if` statement or a loop).
+A **Block Scope** is created anytime you see curly braces `{ ... }` (like in an `if` statement, a loop, or a function).
+
+**How Variables Are Stored in Memory (RAM) on Your Computer:**
+
+When you create a variable, JavaScript creates a "box" in memory containing:
+
+1. The variable name (label)
+2. The value stored
+3. The type of data
+4. Whether it can be changed (const vs let)
+
+```javascript
+const name = "Alice";
+let age = 25;
+const isProgrammer = true;
+```
+
+<div style="padding: 20px; background: #f5f5f5; border-radius: 8px; margin: 20px 0;">
+  <h4 style="margin-top: 0; color: #1976D2;">📦 Memory Visualization</h4>
+  <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Behind the scenes, JavaScript stores each variable like this:</p>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+    <div style="background: white; border: 3px solid #4CAF50; border-radius: 8px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <div style="background: #4CAF50; color: white; padding: 8px; border-radius: 4px; margin: -15px -15px 10px -15px; font-weight: bold; text-align: center;">
+        const
+      </div>
+      <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">
+        <strong>Name:</strong> <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">name</code>
+      </div>
+      <div style="background: #e8f5e9; padding: 12px; border-radius: 4px; margin-bottom: 8px; border-left: 4px solid #4CAF50;">
+        <div style="font-size: 0.85em; color: #666; margin-bottom: 4px;">Value:</div>
+        <div style="font-size: 1.1em; font-weight: bold;">"Alice"</div>
+      </div>
+      <div style="font-size: 0.8em; color: #666; display: flex; justify-content: space-between;">
+        <span><strong>Type:</strong> string</span>
+        <span style="color: #4CAF50;">🔒 Locked</span>
+      </div>
+    </div>
+    <div style="background: white; border: 3px solid #2196F3; border-radius: 8px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <div style="background: #2196F3; color: white; padding: 8px; border-radius: 4px; margin: -15px -15px 10px -15px; font-weight: bold; text-align: center;">
+        let
+      </div>
+      <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">
+        <strong>Name:</strong> <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">age</code>
+      </div>
+      <div style="background: #e3f2fd; padding: 12px; border-radius: 4px; margin-bottom: 8px; border-left: 4px solid #2196F3;">
+        <div style="font-size: 0.85em; color: #666; margin-bottom: 4px;">Value:</div>
+        <div style="font-size: 1.1em; font-weight: bold;">25</div>
+      </div>
+      <div style="font-size: 0.8em; color: #666; display: flex; justify-content: space-between;">
+        <span><strong>Type:</strong> number</span>
+        <span style="color: #2196F3;">🔓 Mutable</span>
+      </div>
+    </div>
+    <div style="background: white; border: 3px solid #9C27B0; border-radius: 8px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <div style="background: #9C27B0; color: white; padding: 8px; border-radius: 4px; margin: -15px -15px 10px -15px; font-weight: bold; text-align: center;">
+        const
+      </div>
+      <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">
+        <strong>Name:</strong> <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">isProgrammer</code>
+      </div>
+      <div style="background: #f3e5f5; padding: 12px; border-radius: 4px; margin-bottom: 8px; border-left: 4px solid #9C27B0;">
+        <div style="font-size: 0.85em; color: #666; margin-bottom: 4px;">Value:</div>
+        <div style="font-size: 1.1em; font-weight: bold;">true</div>
+      </div>
+      <div style="font-size: 0.8em; color: #666; display: flex; justify-content: space-between;">
+        <span><strong>Type:</strong> boolean</span>
+        <span style="color: #9C27B0;">🔒 Locked</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px; padding: 15px; background: #fff3e0; border-left: 4px solid #FF9800; border-radius: 4px;">
+    <strong style="color: #E65100;">💡 Key Differences:</strong>
+    <ul style="margin: 10px 0 0 0; padding-left: 20px; color: #888;">
+      <li><code>const</code> boxes are 🔒 <strong>locked</strong> - you can't change what's inside after creation</li>
+      <li><code>let</code> boxes are 🔓 <strong>mutable</strong> - you can put a new value in the same box</li>
+      <li>Each box knows its own <strong>type</strong> (string, number, boolean, etc.)</li>
+    </ul>
+  </div>
+</div>
 
 ### `let` & `const` (Block Scoped)
 
@@ -63,11 +221,21 @@ These are the modern standard. They respect the boundaries of the block they are
   const secret = "I am hidden";
   console.log(secret); // Works!
 }
-// console.log(secret); // ERROR! 'secret' is not defined here.
+console.log(secret); // ERROR! 'secret' is not defined here.
 ```
 
 - **`const`**: Immutable binding. You cannot reassign it (`x = 5`). Use this by default.
+  ```TypeScript
+  const x: number = 5;
+  x = 10; // Error: Cannot assign to 'x' because it is a constant or a read-only property.
+  ```
 - **`let`**: Mutable. Use this only if you know the value needs to change (like a counter).
+  ```TypeScript
+  let x: number = 5;
+  console.log(x); // Output: 5
+  x = 10; // Works!
+  console.log(x); // Output: 10
+  ```
 
 ### `var` (Function Scoped)
 
@@ -79,6 +247,49 @@ if (true) {
   var leaked = "I escaped!";
 }
 console.log(leaked); // Works (unfortunately). 'let' would have thrown an error.
+```
+
+### Example: Let vs Var in Practice
+
+```javascript
+// Example 1: Block scoping with let
+function testLet() {
+  let message = "outer";
+  // message = "outer"
+
+  if (true) {
+    let message = "inner";
+    // message = "inner" (different variable! the keyword `let` creates a new box)
+    console.log(message); // Output: "inner"
+  }
+
+  console.log(message); // Output: "outer" (unchanged)
+
+  if (true) {
+    message = "inner2"; // Changing the existing variable `message`(no new box — let was not used)
+    console.log(message); // Output: "inner2"
+  }
+
+  console.log(message); // Output: "inner2" (changed!)
+}
+
+// Example 2: Function scoping with var
+function testVar() {
+  var message = "outer";
+  // message = "outer"
+
+  if (true) {
+    var message = "inner";
+    // message = "inner" (SAME variable! var ignores blocks)
+    console.log(message); // Output: "inner"
+  }
+
+  console.log(message); // Output: "inner" (changed!)
+}
+
+// Example 3: const prevents reassignment
+const API_KEY = "secret123";
+API_KEY = "newsecret"; // ❌ ERROR: Assignment to constant variable
 ```
 
 ## 4. Data Types & Operations
@@ -98,6 +309,35 @@ JavaScript has a few primitive types.
     ```javascript
     console.log("Apple"[0]); // "A"
     ```
+
+### Example: String Operations
+
+```javascript
+// Template Literals (Modern Way)
+const firstName = "Jane";
+const lastName = "Doe";
+// firstName = "Jane", lastName = "Doe"
+
+const fullName = `${firstName} ${lastName}`;
+// fullName = "Jane Doe"
+
+const age = 25;
+const message = `In 5 years, you'll be ${age + 5}`;
+// message = "In 5 years, you'll be 30"
+
+// Old Concatenation (Avoid)
+const greeting = "Hello " + firstName + " " + lastName;
+// greeting = "Hello Jane Doe"
+
+// Accessing Characters
+const word = "JavaScript";
+// word = "JavaScript"
+
+console.log(word[0]); // Output: "J"
+console.log(word[4]); // Output: "S"
+console.log(word.length); // Output: 10
+```
+
 - **Boolean**: `true` or `false`.
 - **Undefined vs. Null**:
   - `undefined`: The default "empty" state. If you declare `let x;`, `x` is `undefined`. It means "value is unset."
@@ -117,6 +357,37 @@ console.log(colors[0]); // "Red" (First item is 0)
 console.log(colors[1]); // "Green"
 
 colors.push("Yellow"); // Adds to the end
+```
+
+### Example: Array Manipulation
+
+```javascript
+const colors = ["Red", "Green", "Blue"];
+// colors = ["Red", "Green", "Blue"]
+
+// Accessing by index (0-based)
+const first = colors[0];
+// first = "Red"
+
+const second = colors[1];
+// second = "Green"
+
+const last = colors[colors.length - 1];
+// last = "Blue" (length is 3, so index 2)
+
+// Adding items
+colors.push("Yellow");
+// colors = ["Red", "Green", "Blue", "Yellow"]
+
+colors.push("Purple");
+// colors = ["Red", "Green", "Blue", "Yellow", "Purple"]
+
+// Removing the last item
+const removed = colors.pop();
+// removed = "Purple"
+// colors = ["Red", "Green", "Blue", "Yellow"]
+
+console.log(colors.length); // Output: 4
 ```
 
 **Note:** Strings work the same way! You can access characters in a string using the same `[0]` index syntax.
@@ -144,6 +415,38 @@ for (const color of colors) {
 }
 ```
 
+### Example: Loop Execution Tracking
+
+```javascript
+const fruits = [\"Apple\", \"Banana\", \"Cherry\"];
+
+// Standard for loop - track every iteration
+for (let i = 0; i < fruits.length; i++) {
+  // Iteration 1: i = 0, fruits[0] = \"Apple\"
+  // Iteration 2: i = 1, fruits[1] = \"Banana\"
+  // Iteration 3: i = 2, fruits[2] = \"Cherry\"
+  // Iteration 4: i = 3, condition fails (3 < 3 is false), loop stops
+
+  console.log(`${i}: ${fruits[i]}`);
+}
+// Output:
+// 0: Apple
+// 1: Banana
+// 2: Cherry
+
+// for...of loop (cleaner for simple iteration)\nfor (const fruit of fruits) {
+  // Iteration 1: fruit = \"Apple\"
+  // Iteration 2: fruit = \"Banana\"
+  // Iteration 3: fruit = \"Cherry\"
+
+  console.log(fruit);
+}
+// Output:
+// Apple
+// Banana
+// Cherry
+```
+
 ## 6. Objects & JSON
 
 Objects are collections of **Key-Value** pairs. They are the most common structure in engineering.
@@ -156,6 +459,32 @@ const user = {
 // Accessing data
 console.log(user.firstName); // Dot notation
 console.log(user["age"]); // Bracket notation
+```
+
+### Example: Object Access Patterns
+
+```javascript
+const user = {
+  firstName: "Jane",
+  lastName: "Doe",
+  age: 30,
+  "favorite color": "blue", // Property names with spaces need quotes
+  hobbies: ["reading", "coding"],
+};
+
+// Dot notation (most common)
+console.log(user.firstName); // Output: "Jane"
+console.log(user.age); // Output: 30
+
+// Bracket notation (required for spaces or dynamic keys)
+console.log(user["favorite color"]); // Output: "blue"
+
+// Dynamic property access
+const key = "lastName";
+console.log(user[key]); // Output: "Doe"
+
+// Accessing nested arrays
+console.log(user.hobbies[0]); // Output: "reading"
 ```
 
 ### Looping Objects (`for...in`)
@@ -276,6 +605,58 @@ const subtract = (a, b) => {
 
 // Implicit return (if it's one line)
 const multiply = (a, b) => a * b;
+```
+
+### Example: Functions with State Tracking
+
+```javascript
+// Function Declaration
+function calculateArea(width, height) {
+  // Called with: width = 5, height = 10
+
+  const area = width * height;
+  // area = 50
+
+  return area;
+  // Returns: 50
+}
+
+const result = calculateArea(5, 10);
+// result = 50
+
+console.log(result); // Output: 50
+
+// Arrow Function (Modern)
+const calculateVolume = (width, height, depth) => {
+  // Called with: width = 5, height = 10, depth = 2
+  return width * height * depth;
+  // Returns: 100
+};
+
+const volume = calculateVolume(5, 10, 2);
+// volume = 100
+
+// Arrow Function with Implicit Return (one-liner)
+const double = (x) => x * 2;
+// Called with: x = 7, returns 14 immediately
+
+console.log(double(7)); // Output: 14
+
+// Functions can return early
+function checkAge(age) {
+  // Called with: age = 15
+
+  if (age < 18) {
+    return "Too young";
+    // Exits here! Lines below don't run
+  }
+
+  return "Welcome";
+  // This line never executes for age 15
+}
+
+const status = checkAge(15);
+// status = "Too young"
 ```
 
 ## 10. The Script Tag

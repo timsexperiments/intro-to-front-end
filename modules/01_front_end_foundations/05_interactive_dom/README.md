@@ -82,6 +82,30 @@ title.textContent = "Hello World"; // Good default
 title.innerHTML = "Hello <span>World</span>"; // Renders the span as HTML
 ```
 
+### Example: Content Manipulation
+
+<div style="padding: 20px; background: #e3f2fd; border-radius: 8px; margin: 20px 0;">
+  <h4 style="margin-top: 0;">Try It: Change Content</h4>
+  <h3 id="demo-heading" style="color: #1976D2;">Original Text</h3>
+  <button style="padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;" onclick="document.getElementById('demo-heading').textContent = 'Changed with textContent!'">Change Text</button>
+  <button style="padding: 10px 20px; background: #FF9800; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="document.getElementById('demo-heading').innerHTML = '<strong>Bold</strong> HTML!'">Change with HTML</button>
+</div>
+
+```javascript
+// What happens when you click the first button:
+const heading = document.getElementById("demo-heading");
+// heading = <h3 id="demo-heading">Original Text</h3>
+
+heading.textContent = "Changed with textContent!";
+// heading.textContent = "Changed with textContent!"
+// Result: <h3 id="demo-heading">Changed with textContent!</h3>
+
+// What happens when you click the second button:
+heading.innerHTML = "<strong>Bold</strong> HTML!";
+// innerHTML parses the string as HTML
+// Result: <h3 id="demo-heading"><strong>Bold</strong> HTML!</h3>
+```
+
 ## 5. Inputs & Values
 
 When working with form elements (`<input>`, `<textarea>`, `<select>`), we don't use `innerText`. We use **`value`**.
@@ -117,6 +141,50 @@ btn.classList.add("active");
 btn.classList.remove("active");
 btn.classList.toggle("active"); // Adds if missing, removes if present
 btn.classList.contains("active"); // Returns true/false
+```
+
+### Example: classList in Action
+
+<style>
+  .demo-box-cls {
+    width: 100px;
+    height: 100px;
+    background: #ccc;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  .demo-box-cls.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: scale(1.2) rotate(5deg);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
+</style>
+
+<div style="padding: 20px; background: #f5f5f5; border-radius: 8px; margin: 20px 0;">
+  <div class="demo-box-cls" id="toggle-box">OFF</div>
+  <button style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px;" onclick="const box = document.getElementById('toggle-box'); box.classList.toggle('active'); box.textContent = box.classList.contains('active') ? 'ON' : 'OFF';">Toggle .active Class</button>
+</div>
+
+```javascript
+// When you click the button:
+const box = document.getElementById("toggle-box");
+
+box.classList.toggle("active");
+// If 'active' is absent → adds it
+// If 'active' is present → removes it
+
+// Check if it has the class
+if (box.classList.contains("active")) {
+  box.textContent = "ON";
+} else {
+  box.textContent = "OFF";
+}
 ```
 
 ## 6. Creating & Removing Elements
@@ -160,6 +228,38 @@ while (container.firstChild) {
 
 ```javascript
 newBtn.remove(); // Deletes it from the page
+```
+
+### Example: Creating Elements Dynamically
+
+<div style="padding: 20px; background: #e8f5e9; border-radius: 8px; margin: 20px 0;">
+  <div id="card-container" style="display: flex; gap: 10px; flex-wrap: wrap; min-height: 60px; align-items: center;">
+    <em style="color: #666;">Click the button to add cards...</em>
+  </div>
+  <button style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px;" onclick="const container = document.getElementById('card-container'); const card = document.createElement('div'); card.style.cssText = 'background: #4CAF50; color: white; padding: 15px 25px; border-radius: 8px; font-weight: bold;'; card.textContent = 'Card ' + (container.children.length + 1); if(container.querySelector('em')) container.querySelector('em').remove(); container.append(card);">Add New Card</button>
+  <button style="padding: 10px 20px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 15px; margin-left: 10px;" onclick="const container = document.getElementById('card-container'); if(container.lastElementChild && container.lastElementChild.tagName === 'DIV') container.lastElementChild.remove(); if(container.children.length === 0) {const em = document.createElement('em'); em.style.color = '#666'; em.textContent = 'Click the button to add cards...'; container.append(em);}">Remove Last Card</button>
+</div>
+
+```javascript
+// Step-by-step: Creating and adding an element
+const newCard = document.createElement("div");
+// newCard = <div></div> (exists in memory only)
+
+newCard.textContent = "Card 1";
+// newCard = <div>Card 1</div>
+
+newCard.style.background = "#4CAF50";
+newCard.style.color = "white";
+newCard.style.padding = "15px 25px";
+// Styles applied
+
+const container = document.getElementById("card-container");
+container.append(newCard);
+// Now it's visible on the page!
+
+// Removing an element
+newCard.remove();
+// Element is deleted from the page
 ```
 
 ## 7. Events (Listening)
