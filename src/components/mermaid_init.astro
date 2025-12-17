@@ -1,0 +1,22 @@
+---
+
+---
+
+<script is:inline type="module">
+  import mermaid from "mermaid";
+
+  // Convert ```mermaid``` blocks into Mermaid-compatible DOM
+  document.addEventListener("DOMContentLoaded", () => {
+    document
+      .querySelectorAll("pre > code.language-mermaid, pre > code.language-mmd")
+      .forEach((code) => {
+        const pre = code.parentElement;
+        pre.classList.add("mermaid");
+        pre.textContent = code.textContent;
+      });
+
+    mermaid.initialize({
+      startOnLoad: true,
+    });
+  });
+</script>

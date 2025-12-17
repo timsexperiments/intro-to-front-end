@@ -1,0 +1,88 @@
+---
+title: Front End Foundations
+description: "Master the building blocks of the web: the DOM, semantic HTML, modern CSS layouts, and core JavaScript logic."
+slug: "modules/01_front_end_foundations/index"
+---
+
+# Front End Foundations
+
+In this module, we will strip away the abstractions of modern frameworks and return to the first principles of the web. You will learn how the browser constructs the page (The DOM), how to control layout with precision (CSS), and how to interact with elements on the screen with JavaScript.
+
+## Learning Goals
+
+- Understand the Document Object Model (DOM)
+- Learn basic CSS
+- Learn how to use JavaScript to manipulate the DOM
+
+## Prerequisites
+
+- Git installed on your computer (instructions in the repository [README](../../README.md))
+- A web browser (Google Chrome is recommended)
+- A GitHub (or GitLab) account
+- A text editor (e.g., Neovim, VS Code, IntelliJ, etc...)
+
+## Setup
+
+### 1. Download and install [Google Chrome](https://www.google.com/chrome/)
+
+Visit the [Google Chrome website](https://www.google.com/chrome/) and click **Download Chrome**. Follow the installation prompts for your operating system.
+
+**Why Chrome?** It has the most robust Developer Tools (DevTools) in the industry, which we will rely on heavily for debugging and inspecting the DOM.
+
+### 2. Download and install [VS Code](https://code.visualstudio.com/) (or another text editor of your choice)
+
+Visit the [VS Code website](https://code.visualstudio.com/) and download the stable build for your OS.
+
+VS Code is the industry-standard text editor for web development. It has a rich ecosystem of extensions and built-in terminal support, which makes running commands and editing code seamless.
+
+### 3. Login to or sign up for a GitHub account
+
+If you don't have one yet, go to [GitHub.com](https://github.com/signup) and create a free account. You will use this to host your code, track your history, and submit your assignments.
+
+### 4. Create a new repository on GitHub for your Module 1 assignments
+
+We will create a dedicated repository for your work in this module. Open your terminal and follow these steps:
+
+1.  **Create a folder** for your project:
+
+    ```bash
+    mkdir front-end-foundations
+    cd front-end-foundations
+    ```
+
+2.  **Initialize Git:**
+
+    ```bash
+    git init
+    ```
+
+3.  **Create a README** with a link to the assignment:
+
+    ```bash
+    # Create the file
+    echo "# Front End Foundations Assignments" >> README.md
+
+    # (Optional) Add a link to the assignment for quick access
+    # You can paste the URL to the assignment.md file here later.
+    ```
+
+4.  **Commit your changes:**
+
+    ```bash
+    git add README.md
+    git commit -m "Initial commit"
+    ```
+
+5.  **Push to GitHub:**
+
+    - Go to [GitHub.com/new](https://github.com/new).
+    - Name the repository `front-end-foundations`.
+    - **Do not** check "Initialize with README", .gitignore, or License.
+    - Click **Create repository**.
+    - Copy the commands under "…or push an existing repository from the command line" and run them in your terminal. They will look like this:
+
+    ```bash
+    git remote add origin https://github.com/YOUR_USERNAME/front-end-foundations.git
+    git branch -M main
+    git push -u origin main
+    ```
