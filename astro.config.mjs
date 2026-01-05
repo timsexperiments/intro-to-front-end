@@ -4,8 +4,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://timsexperiments.github.io',
-	base: '/intro-to-front-end',
+	site: 'https://intro-to-front-end.timsexperiments.foo',
 	integrations: [
 		starlight({
 			title: 'Intro to Front End Engineering',
